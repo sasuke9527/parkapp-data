@@ -6,7 +6,7 @@ order,slug,name,website,status,files,places,sessions,events,last_date,notes,roun
 4,ryde,City of Ryde,https://www.ryde.nsw.gov.au,done,1,7,14,0,2026-11-20,泳池 1（RALC）、图书馆 5、下水点 1（Putney Beach）、每周活动 14 条都做完；暑假活动官网还没公布（找到的假期活动页都是旧内容），12 月初再看；RALC 幼儿池页面写 11 月 23 日重开（没写年份）；West Ryde 图书馆搜索结果里写临时关闭整修、页面现在没写，标了 needs_check；Putney Beach 页面没写救生员、厕所、停车，坐标页面没有；每月一次的双语活动和 Auslan 故事会（只有具体日期）没收；RALC 页面没写停车、咖啡、换尿布台,2026-summer,,2026-11-20
 5,parramatta,City of Parramatta,https://www.cityofparramatta.nsw.gov.au,done,1,9,21,0,2026-11-20,PAC 泳池、6 个图书馆+Wentworth Point、Lake Parramatta 泳区；每月一次的双语/Auslan/Pyjama 故事会不是每周固定，没收；暑假活动页只有 10–11 月的，12 月后再收；Epping 水上中心 2024 年关闭未收,2026-summer,,2026-11-20
 6,sydney,City of Sydney,https://www.cityofsydney.nsw.gov.au,done,1,5,5,0,2026-11-20,4 个泳池+4 馆（Glebe/Green Square/Darling Square/Newtown；Surry Hills 只有第1学期旧页面没收）；ABC 池可能整修停用需确认；多数故事会页面是第3学期旧的，已备注；暑假活动未公布,2026-summer,,2026-11-20
-7,northern-beaches,Northern Beaches Council,https://www.northernbeaches.nsw.gov.au,todo,0,0,0,0,,,,,
+7,northern-beaches,Northern Beaches Council,https://www.northernbeaches.nsw.gov.au,done,1,8,29,0,2026-11-20,2 个泳池+6 个图书馆（开放时间来自旧页面，needs_check）；Avalon、Harbord 等社区图书馆自己办故事会，页面没写时间没收；Tibetan 双周故事会没收；暑假活动未公布,2026-summer,,2026-11-20
 8,willoughby,Willoughby City Council,https://www.willoughby.nsw.gov.au,todo,0,0,0,0,,收公园数据时官网拦了自动访问（403），按规则不绕；打不开就把 status 写 blocked、跳过,,,
 9,lane-cove,Lane Cove Council,https://www.lanecove.nsw.gov.au,todo,0,0,0,0,,,,,
 10,north-sydney,North Sydney Council,https://www.northsydney.nsw.gov.au,todo,0,0,0,0,,,,,
