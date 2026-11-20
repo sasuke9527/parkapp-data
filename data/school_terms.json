@@ -1,0 +1,10 @@
+{
+  "source": "https://education.nsw.gov.au/schooling/calendars/2027",
+  "terms": [
+    {"year": 2026, "term": 4, "start": "2026-10-13", "end": "2026-12-17"},
+    {"year": 2027, "term": 1, "start": "2027-02-03", "end": "2027-04-09"},
+    {"year": 2027, "term": 2, "start": "2027-04-29", "end": "2027-07-02"},
+    {"year": 2027, "term": 3, "start": "2027-07-20", "end": "2027-09-24"},
+    {"year": 2027, "term": 4, "start": "2027-10-11", "end": "2027-12-17"}
+  ]
+}

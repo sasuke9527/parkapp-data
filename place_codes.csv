@@ -1,0 +1,36 @@
+code,kinds,group,type,allowed,priority,name_zh,name_en,judge_zh
+toilet,pool|library|swim,amenity,yes_no,,A,厕所,Toilets,在场馆里或紧挨着（同一个停车场）才算
+accessible_toilet,pool|library|swim,amenity,yes_no,,B,无障碍厕所,Accessible toilet,
+baby_change,pool|library|swim,amenity,yes_no,,A,换尿布台,Baby change table,
+parents_room,pool|library|swim,amenity,yes_no,,B,母婴室 / 哺乳室,Parents' room,单独的房间，不只是厕所里的台子
+parking,pool|library|swim,access,multi_enum,free_carpark|paid_carpark|street|none,A,停车,Parking,自带免费停车场 free_carpark；收费 paid_carpark；只能路边停 street；可多选
+cafe_kiosk,pool|library|swim,amenity,yes_no,,B,咖啡 / 小卖部,Café or kiosk,场馆里面或沙滩上的才算；附近的写在 note_zh
+drinking_water,pool|library|swim,amenity,yes_no,,B,饮水机,Drinking water,
+near_station,pool|library|swim,access,text,,B,附近车站,Nearby station or stop,来源写的车站名
+step_free,pool|library|swim,access,yes_no,,A,不用走台阶（婴儿车、轮椅能进）,Step-free access,来源写入口 step-free、level access、ramp access、wheelchair accessible entrance 才写 yes；写了只有楼梯（stairs only、steps to entrance）写 no；只说厕所、车位无障碍的不算；只写「有铺装小路」也不算
+pool_50m,pool,pool,yes_no,,A,50 米池,50 m pool,
+pool_25m,pool,pool,yes_no,,A,25 米池,25 m pool,
+indoor_pool,pool,pool,yes_no,,A,室内池,Indoor pool,
+outdoor_pool,pool,pool,yes_no,,A,室外池,Outdoor pool,
+heated,pool,pool,yes_no,,A,加热 / 恒温,Heated,来源写 heated 或 temperature controlled 才写 yes；只有某个池加热的在 ev 里写是哪个
+toddler_pool,pool,pool,yes_no,,A,幼儿浅水池,Toddler pool,toddler pool、wading pool、baby pool、learners pool 都算
+leisure_pool,pool,pool,yes_no,,A,戏水池 / 休闲池,Leisure pool,leisure pool、play pool；专门上课用的 program pool 不算
+splash_pad,pool,pool,yes_no,,A,喷水乐园,Splash pad / water play,splash pad、water play area、aqua play、spray ground
+waterslide,pool,pool,yes_no,,B,水滑梯,Waterslide,
+learn_to_swim,pool,pool,yes_no,,A,游泳课,Learn to swim,来源写 learn to swim 或 swim school；只写成人训练的不算
+pool_hoist,pool,pool,yes_no,,B,下水升降椅,Pool hoist,
+pool_ramp,pool,pool,yes_no,,B,下水坡道,Pool ramp,
+spa_sauna,pool,pool,yes_no,,B,按摩池 / 桑拿 / 蒸汽房,Spa / sauna / steam room,
+entry_price,pool,pool,text,,B,门票,Entry price,照来源写，最多 120 个字符，例 Adult $6.50; Child $5.00；价格每年变，checked 一定要写当天
+kids_area,library,library,yes_no,,A,儿童区,Children's area,有专门给小孩的区域、书架或游戏角
+language_collection,library,library,multi_enum,zh|ko|ja|hi|es|vi|ar|other,A,外语书,Other-language collection,来源写有哪种语言的馆藏：中文 zh、韩文 ko、日文 ja、印地文 hi、西班牙文 es、越南文 vi、阿拉伯文 ar，其他写 other；可多选
+toy_library,library,library,yes_no,,B,玩具图书馆,Toy library,能借玩具的
+patrolled,swim,swim,text,,A,救生员巡逻,Lifeguard patrols,照来源写季节和时间，例 Sep–Apr 8am–6pm；来源没写就不填
+netted,swim,swim,yes_no,,A,防鲨网,Shark net,港湾网池写 yes
+ocean_pool_cleaning,swim,swim,text,,A,海水池清洁日,Ocean pool cleaning day,照来源写，例 Closed Thursday mornings for cleaning
+shower,swim,amenity,yes_no,,A,淋浴,Showers,
+change_rooms,swim,amenity,yes_no,,B,更衣室,Change rooms,
+shallow_area,swim,swim,yes_no,,B,小孩浅水区,Shallow children's area,海水池里单独的浅水池、或来源说适合小孩的浅水区
+beach_access_mat,swim,access,yes_no,,B,沙滩通道垫 / 沙滩轮椅,Beach matting / beach wheelchair,
+shade,swim,amenity,level3,full|partial|none,B,阴凉,Shade,大部分地方有阴凉写 full；一部分写 partial；来源明确说没阴凉写 none
+dogs,swim,rules,multi_enum,prohibited|on_leash|off_leash_area|off_leash_time_shared,B,狗,Dogs,和公园的写法一样：禁止 prohibited；要拴绳 on_leash；有无绳区 off_leash_area；某些时段可以不拴 off_leash_time_shared
