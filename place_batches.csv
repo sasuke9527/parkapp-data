@@ -22,7 +22,7 @@ order,slug,name,website,status,files,places,sessions,events,last_date,notes,roun
 20,blue-mountains,Blue Mountains City Council,https://www.bmcc.nsw.gov.au,done,1,9,5,0,2026-11-20,Katoomba/Lawson/Springwood 页面为2024-25，needs_check；Blackheath/Wentworth Falls 池无现行页未收,2026-summer,,2026-11-20
 21,fairfield,Fairfield City Council,https://www.fairfieldcity.nsw.gov.au,done,1,6,4,0,2026-11-20,Cabravale 中心未取到；Bonnyrigg 婴儿时间无固定星期未收 session,2026-summer,,2026-11-20
 22,liverpool,Liverpool City Council,https://www.liverpool.nsw.gov.au,done,1,8,8,0,2026-11-20,Whitlam/Wenden 页面旧，needs_check；Holsworthy 池未收；儿歌会按第3学期表,2026-summer,,2026-11-20
-23,canterbury-bankstown,City of Canterbury-Bankstown,https://www.cbcity.nsw.gov.au,todo,0,0,0,0,,,,,
+23,canterbury-bankstown,City of Canterbury-Bankstown,https://www.cbcity.nsw.gov.au,done,1,8,6,0,2026-11-20,Canterbury 新开需确认；Greenacre Splash Park 未收,2026-summer,,2026-11-20
 24,georges-river,Georges River Council,https://www.georgesriver.nsw.gov.au,todo,0,0,0,0,,,,,
 25,bayside,Bayside Council,https://www.bayside.nsw.gov.au,todo,0,0,0,0,,,,,
 26,sutherland,Sutherland Shire Council,https://www.sutherlandshire.nsw.gov.au,todo,0,0,0,0,,,,,
