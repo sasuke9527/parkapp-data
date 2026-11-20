@@ -23,7 +23,7 @@ order,slug,name,website,status,files,places,sessions,events,last_date,notes,roun
 21,fairfield,Fairfield City Council,https://www.fairfieldcity.nsw.gov.au,done,1,6,4,0,2026-11-20,Cabravale 中心未取到；Bonnyrigg 婴儿时间无固定星期未收 session,2026-summer,,2026-11-20
 22,liverpool,Liverpool City Council,https://www.liverpool.nsw.gov.au,done,1,8,8,0,2026-11-20,Whitlam/Wenden 页面旧，needs_check；Holsworthy 池未收；儿歌会按第3学期表,2026-summer,,2026-11-20
 23,canterbury-bankstown,City of Canterbury-Bankstown,https://www.cbcity.nsw.gov.au,done,1,8,6,0,2026-11-20,Canterbury 新开需确认；Greenacre Splash Park 未收,2026-summer,,2026-11-20
-24,georges-river,Georges River Council,https://www.georgesriver.nsw.gov.au,todo,0,0,0,0,,,,,
+24,georges-river,Georges River Council,https://www.georgesriver.nsw.gov.au,done,1,7,0,0,2026-11-20,无固定每周活动页面；South Hurstville 开放时间页面被截断未填,2026-summer,,2026-11-20
 25,bayside,Bayside Council,https://www.bayside.nsw.gov.au,todo,0,0,0,0,,,,,
 26,sutherland,Sutherland Shire Council,https://www.sutherlandshire.nsw.gov.au,todo,0,0,0,0,,,,,
 27,randwick,Randwick City Council,https://www.randwick.nsw.gov.au,todo,0,0,0,0,,,,,
