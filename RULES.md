@@ -432,8 +432,8 @@ EOF
 - `python3 tools/publish.py`：校验全部数据 → 打包 → 和上一版（docs/places.json）比 → 写 docs/places.json 和 docs/manifest.json。内容和上一版一样就不写。
 - 安全检查（退出码 2，不写）：去处总数少了 10% 以上（上一版至少 10 个）；某个 council 的去处少了一半以上（上一版这个 council 至少 4 个）；固定活动总数少了 30% 以上（上一版至少 10 条）。
 - 版本号是 UTC 的 YYYYMMDDHHMM。App 只换比手上新的版本，还会核对格式和条数，对不上就继续用手上的。
-- `--check`：只检查、不写。`--force`：安全检查没过也写，只有人看过、确认没问题（比如 council 真的关了几个图书馆）才用。
-- 发错了要退回：`git revert <那次提交>`，再跑一次 `python3 tools/publish.py`（生成一个更新的版本号，App 才会换），提交、推送。
+- `--check`：只检查、不写。`--force`：安全检查没过也写，只有人看过、确认没问题（比如 council 真的关了几个图书馆）才用。`--bump`：内容一样也换新版本号，退回时用。
+- 发错了要退回：`git revert <那次提交>`，再跑 `python3 tools/publish.py --bump`（内容退回去了，但要换一个更新的版本号，App 才会换回去），提交、推送。
 - 以后格式改到旧版 App 读不懂时：build_places_data.py 的 FORMAT 加 1，App 里的 PlacesFeed.formatSupported 跟着改；旧版 App 会提示「有新数据，要先更新 App」，继续用手上的数据。
 
 ---

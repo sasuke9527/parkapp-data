@@ -8,6 +8,7 @@ publish.py —— 「去哪玩」数据的发布：校验 → 打包 → 安全�
   python3 tools/publish.py            正常发布：数据有错误、或者数量掉得太多，就不写
   python3 tools/publish.py --check    只检查、不写文件
   python3 tools/publish.py --force    数量掉得多也照样写（只有人看过、确认没问题才用）
+  python3 tools/publish.py --bump     内容和上一版一样也重写、换一个新版本号（git revert 退回以后用，App 才会换回去）
 
 退出码：0 写好了，或者内容和上一版一样（不写）；1 数据有错误；2 数量掉得太多，没写（安全检查）
 
@@ -84,6 +85,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(description="发布「去哪玩」数据到 docs/")
     p.add_argument("--check", action="store_true", help="只检查、不写文件")
     p.add_argument("--force", action="store_true", help="数量掉得多也写（人看过才用）")
+    p.add_argument("--bump", action="store_true", help="内容一样也换新版本号（退回以后用）")
     args = p.parse_args(argv)
 
     builder = load_builder()
@@ -101,12 +103,16 @@ def main(argv=None):
             prev = json.loads(prev_path.read_text(encoding="utf-8"))
         except json.JSONDecodeError:
             prev = {}
-    if prev and comparable(prev) == comparable(new):
+    same = bool(prev) and comparable(prev) == comparable(new)
+    if same and not args.bump:
         print(f"内容和上一版（{prev.get('version', '?')}）一样，不用发布。{summary}")
         return 0
 
-    for line in changes(prev, new) or ["（第一次发布）"]:
-        print(line)
+    if same:
+        print("内容和上一版一样，按 --bump 换一个新版本号")
+    else:
+        for line in changes(prev, new) or ["（第一次发布）"]:
+            print(line)
     problems = safety_problems(prev, new) if prev else []
     if problems and not args.force:
         print("安全检查没通过，没有发布：")

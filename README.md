@@ -33,4 +33,4 @@ python3 tools/publish.py      # 有错误或数量掉得太多就不写
 git add -A && git commit -m "……" && git push
 ```
 
-发错了：`git revert` 那次提交再 push，App 第二天会换回去（版本号以最新提交里的为准，所以 revert 之后要再跑一次 publish.py 生成新版本号）。
+发错了：`git revert` 那次提交，再跑 `python3 tools/publish.py --bump`（换一个更新的版本号，App 才会换回去），提交、push。
