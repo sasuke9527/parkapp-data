@@ -9,7 +9,7 @@ order,slug,name,website,status,files,places,sessions,events,last_date,notes,roun
 7,northern-beaches,Northern Beaches Council,https://www.northernbeaches.nsw.gov.au,done,1,8,29,0,2026-11-20,2 个泳池+6 个图书馆（开放时间来自旧页面，needs_check）；Avalon、Harbord 等社区图书馆自己办故事会，页面没写时间没收；Tibetan 双周故事会没收；暑假活动未公布,2026-summer,,2026-11-20
 8,willoughby,Willoughby City Council,https://www.willoughby.nsw.gov.au,done,1,2,7,0,2026-11-20,Chatswood 和 West Chatswood 图书馆+7 项故事会；Willoughby Leisure Centre 泳池 2021 年底关闭重建，官网没有现行页面，没收；Mandarin/Japanese/Cantonese 故事会页面没写每周时间没收；暑假活动未公布,2026-summer,,2026-11-20
 9,lane-cove,Lane Cove Council,https://www.lanecove.nsw.gov.au,done,1,4,5,0,2026-11-20,Lane Cove Aquatic Centre（私营运营）+Lane Cove/St Leonards/Greenwich 图书馆+5 项活动；Hunters Hill 的 The Yarn 故事会留给 hunters-hill 批次；暑假活动未公布,2026-summer,,2026-11-20
-10,north-sydney,North Sydney Council,https://www.northsydney.nsw.gov.au,todo,0,0,0,0,,,,,
+10,north-sydney,North Sydney Council,https://www.northsydney.nsw.gov.au,done,1,2,0,0,2026-11-20,NSOP 2026-08 重开，时间来自议会文件需确认；Stanton Library 只有旧的 Rhymetime 页面和零散活动，没写每周固定时间没收；Crows Nest 没有议会泳池；暑假活动未公布,2026-summer,,2026-11-20
 11,hunters-hill,Hunter's Hill Council,https://www.huntershill.nsw.gov.au,todo,0,0,0,0,,,,,
 12,canada-bay,City of Canada Bay,https://www.canadabay.nsw.gov.au,todo,0,0,0,0,,,,,
 13,inner-west,Inner West Council,https://www.innerwest.nsw.gov.au,todo,0,0,0,0,,,,,
