@@ -1,12 +1,12 @@
 {
   "format": 1,
-  "version": "202611200148",
+  "version": "202611200150",
   "generated": "2026-11-20",
   "file": "places.json",
-  "bytes": 182115,
-  "sha256": "e4edfddf30454baaae03466d52e3052abef1d5e4e44a34a0c238672847a71fde",
-  "places": 121,
-  "sessions": 194,
+  "bytes": 212886,
+  "sha256": "b80f7bfbbcf09823a91964bff93773e665f8a29ce0f3264befa6618a1c691e9a",
+  "places": 151,
+  "sessions": 226,
   "events": 0,
   "terms": 5
 }
