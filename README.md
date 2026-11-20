@@ -5,7 +5,7 @@
 - **App 怎么拿到**：App 每天读一次 `https://sasuke9527.github.io/parkapp-data/manifest.json`，有新版本就下载同一目录下的 `places.json`（GitHub Pages 发布的是 `docs/` 文件夹）。
 - **规则**：`RULES.md`。和 claude.ai 项目「app」里的 `claude/park-data/README-去哪玩数据格式与填写说明.md` 是同一份，改的时候两边一起改。
 - **谁在改**：
-  - 定时任务「去哪玩数据季度复查」：每个学校假期开始前三四周复查一轮，顺便收这个假期的活动（RULES.md 第十五节）。
+  - 定时任务「去哪玩数据季度复查」：每个学校假期开始前四周内复查一轮，顺便收这个假期的活动（RULES.md 第十五节）。
   - 新 council 的第一次收集：在项目里开 Sonnet 对话，用 RULES.md 第十二节的提示词。
 - **以这里为准**：从 2026-11-20 起，数据、词表、工具和批次表都以这个仓库为准；项目里的旧副本不再更新。
 
@@ -23,6 +23,7 @@
 | `place_data_tool.py` | 校验工具：`selftest`、`add`、`validate`、`stats` |
 | `tools/build_places_data.py` | 打包成 App 读的 places.json |
 | `tools/publish.py` | 校验 → 打包 → 安全检查 → 写 `docs/places.json`、`docs/manifest.json` |
+| `tools/round.py` | 季度复查：现在是哪一轮、在不在窗口里、还有哪些 council 要做 |
 | `docs/` | GitHub Pages 发布的内容（App 读这里） |
 
 ## 发布
