@@ -7,7 +7,7 @@ order,slug,name,website,status,files,places,sessions,events,last_date,notes,roun
 5,parramatta,City of Parramatta,https://www.cityofparramatta.nsw.gov.au,done,1,9,21,0,2026-11-20,PAC 泳池、6 个图书馆+Wentworth Point、Lake Parramatta 泳区；每月一次的双语/Auslan/Pyjama 故事会不是每周固定，没收；暑假活动页只有 10–11 月的，12 月后再收；Epping 水上中心 2024 年关闭未收,2026-summer,,2026-11-20
 6,sydney,City of Sydney,https://www.cityofsydney.nsw.gov.au,done,1,8,5,0,2026-11-20,4 个泳池+4 馆（Glebe/Green Square/Darling Square/Newtown；Surry Hills 只有第1学期旧页面没收）；ABC 池可能整修停用需确认；多数故事会页面是第3学期旧的，已备注；暑假活动未公布,2026-summer,,2026-11-20
 7,northern-beaches,Northern Beaches Council,https://www.northernbeaches.nsw.gov.au,done,1,8,29,0,2026-11-20,2 个泳池+6 个图书馆（开放时间来自旧页面，needs_check）；Avalon、Harbord 等社区图书馆自己办故事会，页面没写时间没收；Tibetan 双周故事会没收；暑假活动未公布,2026-summer,,2026-11-20
-8,willoughby,Willoughby City Council,https://www.willoughby.nsw.gov.au,todo,0,0,0,0,,收公园数据时官网拦了自动访问（403），按规则不绕；打不开就把 status 写 blocked、跳过,,,
+8,willoughby,Willoughby City Council,https://www.willoughby.nsw.gov.au,done,1,2,7,0,2026-11-20,Chatswood 和 West Chatswood 图书馆+7 项故事会；Willoughby Leisure Centre 泳池 2021 年底关闭重建，官网没有现行页面，没收；Mandarin/Japanese/Cantonese 故事会页面没写每周时间没收；暑假活动未公布,2026-summer,,2026-11-20
 9,lane-cove,Lane Cove Council,https://www.lanecove.nsw.gov.au,todo,0,0,0,0,,,,,
 10,north-sydney,North Sydney Council,https://www.northsydney.nsw.gov.au,todo,0,0,0,0,,,,,
 11,hunters-hill,Hunter's Hill Council,https://www.huntershill.nsw.gov.au,todo,0,0,0,0,,,,,
