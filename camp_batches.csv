@@ -1,0 +1,7 @@
+order,slug,name,website,status,files,camps,last_date,notes
+1,npws-sydney,NPWS · Sydney and surrounds（Royal、Heathcote、Ku-ring-gai Chase、Lane Cove、Cattai、Bents Basin、Dharawal 等）,https://www.nationalparks.nsw.gov.au,todo,0,0,,从 NPWS 网站 Camping and accommodation 里按地区 Sydney and surrounds 列出的 campground 页面做起；小屋、别墅（cabins、cottages、glamping）不收
+2,npws-blue-mountains,NPWS · Blue Mountains 地区（Blue Mountains、Kanangra-Boyd、Wollemi 南部、Gardens of Stone 等）,https://www.nationalparks.nsw.gov.au,todo,0,0,,NPWS 网站按地区 Blue Mountains 列出的 campground
+3,npws-central-coast,NPWS · Central Coast 和 Hunter 南部（只收这些公园：Bouddi、Dharug、Yengo、Popran、Watagans、Munmorah、Wollemi 的 Colo 一带）,https://www.nationalparks.nsw.gov.au,todo,0,0,,只收括号里这些公园的 campground，别的公园太远不收；公园页面不存在或没有营地就跳过
+4,npws-south,NPWS · Southern Highlands 和 Illawarra（只收这些公园：Morton、Budderoo、Bungonia、Macquarie Pass、Seven Mile Beach、Nattai、Kangaroo Valley 一带）,https://www.nationalparks.nsw.gov.au,todo,0,0,,只收括号里这些公园的 campground
+5,forestry,Forestry Corporation of NSW · 州森林营地（只收这些森林：Olney、Watagan、Heaton、Ourimbah、Belanglo、Penrose、Wingello、Meryla、Jenolan、Hampton、Lidsdale、Sunny Corner、Newnes）,https://www.forestrycorporation.com.au,todo,0,0,,这个网站让不让自动访问还没核实：WebFetch 打不开或被拒就整批标 blocked、不绕过
+6,other-gov,其他政府自营的营地（Harbour Trust 的 Cockatoo Island；WaterNSW 的 Bendeela；Central Coast、Wollongong、Hawkesbury、Blue Mountains、Wingecarribee 等 council 自己经营的 camping area / tourist park）,,todo,0,0,,每个都从它自己的官网页面收；私人和连锁 holiday park（Big4、NRMA、Discovery、Ingenia、Reflections 等）不收

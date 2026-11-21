@@ -50,6 +50,9 @@ BANNED_URL_PARTS = ["google.", "goo.gl", "g.page", "maps.apple.com", "facebook.c
 # 只能当报名链接、不能当事实来源的平台
 BOOKING_ONLY_PARTS = ["eventbrite.", "humanitix.", "trybooking.", "ticketek.", "ticketmaster."]
 GREATER_SYDNEY_BOX = (-34.45, -32.95, 149.95, 151.70)
+# 露营地（Opus 2026-11-22）：放在 data/camps/，词表是 camp_codes.csv，批次是 camp_batches.csv，规则见 RULES-CAMP.md。
+# 和泳池、图书馆分开放：打包、发布脚本不读 data/camps/，所以已经上架的 App 不受影响。
+CAMP_BOX = (-35.60, -32.30, 149.00, 152.30)      # 悉尼周边两三小时车程的大致范围，只用来提醒坐标写反
 
 MAX_EV = 120
 MAX_NOTE = 80
@@ -62,10 +65,15 @@ PLACE_OPTIONAL = ["address", "lat", "lon", "spot_type", "operator", "beachwatch"
 SESSION_REQUIRED = ["id", "place", "title", "type", "weekday", "start", "sources", "checked"]
 SESSION_OPTIONAL = ["end", "age_min_months", "age_max_months", "language", "term_only", "booking",
                     "cost", "valid_from", "valid_to", "note_zh"]
+CAMP_REQUIRED = ["id", "kind", "name", "area", "sources", "facts", "checked", "status"]
+CAMP_OPTIONAL = ["park", "suburb", "address", "lat", "lon", "operator", "booking", "booking_url", "season",
+                 "note_zh", "aka"]
 EVENT_REQUIRED = ["id", "title", "council", "dates", "sources", "checked"]
 EVENT_OPTIONAL = ["place", "venue", "suburb", "age_min", "age_max", "cost", "booking", "booking_url",
                   "holiday", "note_zh"]
 
+
+CAMP_CODES = {}     # camp_codes.csv，main() 里读
 
 # ---------------------------------------------------------------- 词表
 
@@ -218,16 +226,32 @@ def day_spec_ok(spec):
     return True
 
 
-def validate_place(rec, codes, rep, today, line):
+def validate_place(rec, codes, rep, today, line, camp=False):
+    """camp=True：露营地（data/camps/）。字段少一些：没有 hours，council 换成 area（camp_batches.csv 里的 slug）。"""
     where = f"第 {line} 行 {rec.get('id', '?')}"
-    check_common(rep, where, rec, PLACE_REQUIRED, PLACE_OPTIONAL, today)
+    if camp:
+        check_common(rep, where, rec, CAMP_REQUIRED, CAMP_OPTIONAL, today)
+    else:
+        check_common(rep, where, rec, PLACE_REQUIRED, PLACE_OPTIONAL, today)
     kind = rec.get("kind")
-    if kind not in KINDS:
-        rep.err(where, f"kind 只能是 {' / '.join(KINDS)}")
+    if camp:
+        if kind != "camp":
+            rep.err(where, 'data/camps/ 里的 kind 只能是 "camp"')
+            return
+    elif kind not in KINDS:
+        rep.err(where, f"kind 只能是 {' / '.join(KINDS)}" + ("（露营地放 data/camps/）" if kind == "camp" else ""))
         return
-    council = rec.get("council")
+    council = rec.get("area" if camp else "council")
     if not isinstance(council, str) or not SLUG_RE.match(council):
-        rep.err(where, "council 写 councils.csv 里的 slug")
+        rep.err(where, "area 写 camp_batches.csv 里的 slug" if camp else "council 写 councils.csv 里的 slug")
+    if camp:
+        for k in ("park", "suburb", "address", "operator"):
+            if k in rec and (not isinstance(rec[k], str) or not rec[k].strip()):
+                rep.err(where, f"{k} 写文字；页面没写就不写这个字段")
+        if "booking" in rec and rec["booking"] not in BOOKING:
+            rep.err(where, f"booking 只能是 {' / '.join(BOOKING)}")
+        if "booking_url" in rec:
+            check_url(rep, where, rec["booking_url"], booking_ok=True)
     rid = rec.get("id")
     if isinstance(rid, str) and isinstance(council, str):
         prefix = f"au-nsw-{council}-{kind}-"
@@ -244,10 +268,12 @@ def validate_place(rec, codes, rep, today, line):
         if not isinstance(lat, (int, float)) or not isinstance(lon, (int, float)):
             rep.err(where, "lat / lon 写数字")
         else:
-            a, b, c, d = GREATER_SYDNEY_BOX
+            a, b, c, d = CAMP_BOX if camp else GREATER_SYDNEY_BOX
             if not (a <= lat <= b and c <= lon <= d):
-                rep.warn(where, "坐标不在大悉尼范围里，看看是不是写反了")
-    if kind == "swim":
+                rep.warn(where, "坐标不在悉尼周边范围里，看看是不是写反了" if camp else "坐标不在大悉尼范围里，看看是不是写反了")
+    if camp:
+        pass
+    elif kind == "swim":
         if rec.get("spot_type") not in SPOT_TYPES:
             rep.err(where, f"下水点要写 spot_type：{' / '.join(SPOT_TYPES)}")
     else:
@@ -446,6 +472,8 @@ def record_type(path, override=None):
     if override:
         return override
     parts = Path(path).parts
+    if "camps" in parts:
+        return "camp"
     if "sessions" in parts:
         return "session"
     if "events" in parts:
@@ -464,6 +492,8 @@ def validate_records(records, rtype, codes, today=None):
             continue
         if rtype == "place":
             validate_place(rec, codes, rep, today, line)
+        elif rtype == "camp":
+            validate_place(rec, CAMP_CODES, rep, today, line, camp=True)
         elif rtype == "session":
             validate_session(rec, rep, today, line)
         else:
@@ -544,13 +574,15 @@ def cmd_add(args, codes):
 
 def cmd_stats(args, codes):
     kinds, facts, covered = Counter(), 0, Counter()
+    if args.files and all(record_type(f, args.type) == "camp" for f in args.files):
+        codes = CAMP_CODES
     a_codes = {c: s for c, s in codes.items() if s["priority"] == "A"}
     places = 0
     for path in args.files:
         records, _ = read_jsonl(path)
         rtype = record_type(path, args.type)
         for _, rec in records:
-            if rtype != "place":
+            if rtype not in ("place", "camp"):
                 kinds[rtype] += 1
                 continue
             places += 1
@@ -571,6 +603,8 @@ def cmd_stats(args, codes):
 
 
 def cmd_codes(args, codes):
+    if args.kind == "camp":
+        codes = CAMP_CODES
     for c, s in codes.items():
         if args.kind and args.kind not in s["kinds"]:
             continue
@@ -633,17 +667,37 @@ def cmd_selftest(args, codes):
     for name, passed in checks:
         print(("✓ " if passed else "✗ ") + name)
     print("自检通过" if ok else "自检没通过")
+    if CAMP_CODES:
+        good_camp = {"id": "au-nsw-npws-sydney-camp-test-campground", "kind": "camp", "name": "Test campground",
+                     "area": "npws-sydney", "park": "Test National Park", "lat": -34.07, "lon": 151.1,
+                     "booking": "required", "booking_url": "https://www.nationalparks.nsw.gov.au/test",
+                     "sources": [{"type": "state_gov", "url": "https://www.nationalparks.nsw.gov.au/test"}],
+                     "facts": [{"code": "camp_types", "value": ["tent", "walk_in"]}, {"code": "toilet", "value": "yes"},
+                               {"code": "campfire", "value": "no", "ev": "no campfires"},
+                               {"code": "camp_fee", "value": "From $24.60 per night for 2 people"}],
+                     "checked": today.isoformat(), "status": "ok"}
+        camp_checks = [
+            ("露营地：好的记录能过", not validate_records([(1, good_camp)], "camp", codes, today).errors),
+            ("露营地：不能放进 data/places", bool(validate_records([(1, good_camp)], "place", codes, today).errors)),
+            ("露营地：不收 hours", bool(validate_records([(1, dict(good_camp, hours=[{"days": "daily", "open": "08:00", "close": "17:00"}]))], "camp", codes, today).errors)),
+            ("露营地：泳池的代码不能用", bool(validate_records([(1, dict(good_camp, facts=[{"code": "pool_50m", "value": "yes"}]))], "camp", codes, today).errors)),
+            ("露营地：泳池不能放进 data/camps", bool(validate_records([(1, dict(good_camp, kind="pool"))], "camp", codes, today).errors)),
+        ]
+        for name, passed in camp_checks:
+            print(("  ✓ " if passed else "  ✗ ") + name)
+            ok = ok and passed
+        print("露营地自检" + ("通过" if all(p for _, p in camp_checks) else "没过"))
     return 0 if ok else 1
 
 
 def main(argv=None):
     p = argparse.ArgumentParser(description="「去哪玩」数据工具")
     p.add_argument("--codes", help="place_codes.csv 的位置（默认和脚本放一起）")
-    p.add_argument("--type", choices=["place", "session", "event"], help="记录类型（默认看文件放在哪）")
+    p.add_argument("--type", choices=["place", "session", "event", "camp"], help="记录类型（默认看文件放在哪）")
     sub = p.add_subparsers(dest="cmd", required=True)
     sub.add_parser("selftest")
     c = sub.add_parser("codes")
-    c.add_argument("--kind", choices=KINDS)
+    c.add_argument("--kind", choices=KINDS + ["camp"])
     a = sub.add_parser("add")
     a.add_argument("file")
     v = sub.add_parser("validate")
@@ -652,6 +706,9 @@ def main(argv=None):
     s.add_argument("files", nargs="+")
     args = p.parse_args(argv)
     codes = load_codes(args.codes)
+    global CAMP_CODES
+    camp_path = HERE / "camp_codes.csv"
+    CAMP_CODES = load_codes(camp_path) if camp_path.exists() else {}
     return {"selftest": cmd_selftest, "codes": cmd_codes, "add": cmd_add,
             "validate": cmd_validate, "stats": cmd_stats}[args.cmd](args, codes)
 

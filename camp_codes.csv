@@ -1,0 +1,26 @@
+code,kinds,group,type,allowed,priority,name_zh,name_en,judge_zh
+camp_types,camp,camp,multi_enum,tent|camper_trailer|caravan|campervan|beside_vehicle|walk_in|group,A,能怎么住,Camping types,照页面的 Suitable for / Camping type 写：帐篷 tent；拖挂露营车 camper_trailer；房车拖挂 caravan；自驾房车 campervan / motorhome 写 campervan；车停在帐篷旁边 beside_vehicle；要背东西走进去 walk_in（remote / backpack / hike-in camping）；团体营地 group；可多选
+access,camp,access,multi_enum,2wd|4wd|walk_in|boat,A,怎么到,Access,普通轿车能开到写 2wd（页面写 2WD、sealed road、all-weather unsealed road 都算）；写了要四驱写 4wd；只能走进去写 walk_in；只能坐船或渡轮写 boat；可多选
+toilet,camp,amenity,yes_no,,A,厕所,Toilets,页面写了有厕所（不管哪种）写 yes；明确写没有厕所写 no
+flush_toilet,camp,amenity,yes_no,,B,冲水厕所,Flush toilets,页面写 flush toilets 写 yes；写 non-flush / pit / composting / drop toilets 写 no
+shower,camp,amenity,yes_no,,A,淋浴,Showers,页面写有淋浴写 yes；明确写没有写 no
+hot_shower,camp,amenity,yes_no,,B,热水淋浴,Hot showers,页面写 hot showers 写 yes；写 cold showers only 写 no
+drinking_water,camp,amenity,yes_no,,A,饮用水,Drinking water,页面写有 drinking water 写 yes；写 no drinking water、bring your own water、要自己烧开或净化的写 no
+campfire,camp,rules,yes_no,,A,能生火,Campfires,页面写可以生火（fire rings、fire pits、wood barbecues、campfires permitted）写 yes；写 no campfires / fires not permitted / fuel stove only 写 no；夏天禁火这类条件摘到 ev 里
+bbq,camp,amenity,multi_enum,gas_electric|wood|none,B,烧烤,Barbecues,燃气或电烧烤炉 gas_electric；烧柴的烧烤炉 wood；明确写没有写 none；可多选
+dogs,camp,rules,multi_enum,prohibited|on_leash|allowed,A,狗,Dogs,页面写不许带宠物写 prohibited（国家公园一般是）；要拴绳写 on_leash；可以带、没说拴绳写 allowed
+camp_fee,camp,cost,text,,A,营地费,Camping fees,照页面写每晚多少钱、按什么算，最多 120 个字符，例 From $24.60 per night for 2 people；免费就写 Free
+park_entry_fee,camp,cost,text,,B,公园门票,Park entry fees,页面写了进公园另外收的车辆费才填，照页面写，例 $12 per vehicle per day
+site_count,camp,camp,count,,B,营位数,Number of sites,页面写了有多少个营位才填，写整数
+picnic_table,camp,amenity,yes_no,,B,野餐桌,Picnic tables,
+powered_sites,camp,amenity,yes_no,,B,带电营位,Powered sites,页面写有 powered sites 写 yes；写 unpowered only / no power 写 no
+camp_kitchen,camp,amenity,yes_no,,B,营地厨房,Camp kitchen,
+rubbish_bins,camp,amenity,yes_no,,B,垃圾桶,Rubbish bins,页面写有垃圾桶写 yes；写 take your rubbish with you / no bins 写 no
+firewood,camp,amenity,yes_no,,B,提供木柴,Firewood supplied,页面写提供或出售木柴写 yes；写 bring your own firewood 写 no
+generator,camp,rules,yes_no,,B,能用发电机,Generators allowed,页面写允许写 yes；写 no generators 写 no
+swimming,camp,nearby,yes_no,,B,旁边能游泳,Swimming nearby,页面明说营地旁边可以游泳（河、湖、海滩）才写 yes；页面写不要下水写 no
+playground,camp,nearby,yes_no,,B,儿童游乐场,Playground,营地里或紧挨着的才算
+cafe_kiosk,camp,amenity,yes_no,,B,咖啡 / 小卖部,Café or kiosk,营地里的才算
+accessible_toilet,camp,amenity,yes_no,,B,无障碍厕所,Accessible toilet,
+accessibility,camp,access,text,,B,无障碍情况,Accessibility,照页面的 Accessibility 一栏摘一小句，最多 120 个字符，例 Hard: steep gravel path from carpark
+walk_in_distance,camp,access,text,,B,从停车场走多远,Walk from carpark,要走进去的营地：照页面写距离或时间，例 300m from carpark；1.5km walk

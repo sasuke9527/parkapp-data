@@ -34,3 +34,7 @@ git add -A && git commit -m "……" && git push
 ```
 
 发错了：`git revert` 那次提交，再跑 `python3 tools/publish.py --bump`（换一个更新的版本号，App 才会换回去），提交、push。
+
+## 露营地（2026-11-22 加，只收集、还没发布）
+
+规则见 RULES-CAMP.md，词表 camp_codes.csv，批次 camp_batches.csv，数据放 data/camps/。打包和发布脚本不读这个文件夹。
