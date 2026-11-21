@@ -41,6 +41,8 @@ SESSION_TYPES = ["storytime", "rhyme_time", "toddler_time", "bilingual_storytime
                  "craft", "stem", "other"]
 LANGS = ["en", "zh", "ko", "ja", "hi", "es", "vi", "ar", "other"]
 BOOKING = ["none", "required", "recommended"]
+# 露营地的经营方：government（政府自己管）/ private（私人或连锁公司经营，用户要求 2026-11-22 起也收，但必须标出来）
+OPERATOR_TYPES = ["government", "private"]
 WEEKDAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 DAY_WORDS = WEEKDAYS + ["daily", "weekdays", "weekends", "public_holiday"]
 # 不能当来源的网站（和公园的一样）
@@ -66,8 +68,8 @@ SESSION_REQUIRED = ["id", "place", "title", "type", "weekday", "start", "sources
 SESSION_OPTIONAL = ["end", "age_min_months", "age_max_months", "language", "term_only", "booking",
                     "cost", "valid_from", "valid_to", "note_zh"]
 CAMP_REQUIRED = ["id", "kind", "name", "area", "sources", "facts", "checked", "status"]
-CAMP_OPTIONAL = ["park", "suburb", "address", "lat", "lon", "operator", "booking", "booking_url", "season",
-                 "note_zh", "aka"]
+CAMP_OPTIONAL = ["park", "suburb", "address", "lat", "lon", "operator", "operator_type", "booking", "booking_url",
+                 "season", "note_zh", "aka"]
 EVENT_REQUIRED = ["id", "title", "council", "dates", "sources", "checked"]
 EVENT_OPTIONAL = ["place", "venue", "suburb", "age_min", "age_max", "cost", "booking", "booking_url",
                   "holiday", "note_zh"]
@@ -250,6 +252,10 @@ def validate_place(rec, codes, rep, today, line, camp=False):
                 rep.err(where, f"{k} 写文字；页面没写就不写这个字段")
         if "booking" in rec and rec["booking"] not in BOOKING:
             rep.err(where, f"booking 只能是 {' / '.join(BOOKING)}")
+        if "operator_type" in rec and rec["operator_type"] not in OPERATOR_TYPES:
+            rep.err(where, f"operator_type 只能是 {' / '.join(OPERATOR_TYPES)}")
+        if rec.get("operator_type") == "private" and not rec.get("operator"):
+            rep.err(where, "非政府经营（operator_type=private）要写 operator：官网上的经营方名字")
         if "booking_url" in rec:
             check_url(rep, where, rec["booking_url"], booking_ok=True)
     rid = rec.get("id")
@@ -682,6 +688,9 @@ def cmd_selftest(args, codes):
             ("露营地：不收 hours", bool(validate_records([(1, dict(good_camp, hours=[{"days": "daily", "open": "08:00", "close": "17:00"}]))], "camp", codes, today).errors)),
             ("露营地：泳池的代码不能用", bool(validate_records([(1, dict(good_camp, facts=[{"code": "pool_50m", "value": "yes"}]))], "camp", codes, today).errors)),
             ("露营地：泳池不能放进 data/camps", bool(validate_records([(1, dict(good_camp, kind="pool"))], "camp", codes, today).errors)),
+            ("露营地：非政府经营必须写 operator", bool(validate_records([(1, dict(good_camp, operator_type="private"))], "camp", codes, today).errors)
+                                      and not validate_records([(1, dict(good_camp, operator_type="private", operator="Test Holiday Park"))], "camp", codes, today).errors),
+            ("露营地：operator_type 只能是 government / private", bool(validate_records([(1, dict(good_camp, operator_type="council"))], "camp", codes, today).errors)),
         ]
         for name, passed in camp_checks:
             print(("  ✓ " if passed else "  ✗ ") + name)
