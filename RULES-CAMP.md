@@ -22,7 +22,7 @@
 **网站让不让抓**：
 - nationalparks.nsw.gov.au 的 robots.txt（2026-11-22 看过）允许 /camping-and-accommodation/ 和 /sitemap.xml。**NPWS 的搜索页只显示前 10 条，但 sitemap 里列了全部 375 个 campground 页面**，所以按 sitemap 核对就能收全，不用翻页。
 - 别的网站**第一次用时先看 robots.txt**（浏览器打开 `<站>/robots.txt`）。写了 Disallow: / 或点名禁止 ClaudeBot、anthropic-ai、Claude-Web（Cloudflare 的 Content-Signal 也算）的，这个站不让 Anthropic 的程序读：**不读它的页面**，这一块标 blocked 并向我汇报（2026-11-22 查到的：Patonga 的订位站 cchp.com.au）。robots.txt 打不开、或被带到登录页（WaterNSW）的，同样不读，除非 WebFetch 能直接读到那一页。
-- 2026-11-22 看过、允许读取的：NPWS、Forestry Corporation、Holiday Haven、Kiama Coast、Wollongong、Booderee、Cockatoo Island、Hawkesbury、Central Coast 议会、Blue Mountains 议会、Lake Mac Holiday Parks、NRMA、BIG4、Discovery Parks、G’day Parks、Reflections、Hampshire Holidays、Katoomba Falls 和 Blackheath Glen（Belgravia）、Del Rio、Blue Lagoon、Walu。
+- 2026-11-22 看过、允许读取的：NPWS、Forestry Corporation、Holiday Haven、Kiama Coast、Wollongong、Booderee、Cockatoo Island、Hawkesbury、Central Coast 议会、Blue Mountains 议会、Lake Mac Holiday Parks、NRMA、BIG4、Discovery Parks、G’day Parks、Reflections、Hampshire Holidays、Katoomba Falls 和 Blackheath Glen（Belgravia）、Del Rio、Blue Lagoon、Walu；第 17–18 批又看了：Governors Hill Carapark、Mudgee Riverside Park、Mudgee Valley Park、Bushlands Tourist Park 的官网（robots 都没禁止这些页面；Goulburn South Caravan Park 的官网在浏览器里打不开，没读到 robots）。
 - WebFetch 打不开、被拒或返回 403 的，就**不绕过**：这一批在 camp_batches.csv 里标 blocked，notes 写原因，向我汇报。
 - robots.txt 只管「让不让程序读」，**版权和使用条款是另一回事**：每个新网站第一次用时，除了 robots.txt，还要看它的版权页或使用条款（页脚的 Copyright / Disclaimer / Terms），结论按下面「一·B」处理。
 
@@ -49,7 +49,8 @@
 | hawkesbury.nsw.gov.au | /footer-links/disclaimer | 只限个人、内部或非商业使用，不得商业化 | official_only |
 | discoveryholidayparks.com.au、gdayparks.com.au | /terms-and-conditions（第 7 条） | 禁止商用、复制转载，**也禁止用程序或自动方式读取页面** | official_only；这两家以后不再用程序读 |
 | nrmaparksandresorts.com.au | /terms-conditions-and-policies/ | 列出的条款是预订、公园规则、隐私等，没找到网站使用或版权条款 | 暂保留详细信息，待确认 |
-| big4.com.au | /terms-and-conditions | 页面动态加载，没找到网站使用条款 | 暂保留，待确认 |
+| big4.com.au | /terms-and-conditions | 页面动态加载，读渲染后的文字，没找到版权、复制或禁止程序读取的条款 | 暂保留，待确认 |
+| governorshillcarapark.com.au（Goulburn） | /copy-of-contact（隐私政策） | robots 允许；页脚只有隐私政策，没有版权或使用条款 | 暂保留，待确认 |
 | hampshireholidays.com.au | /terms-and-conditions | 条款里没有版权或转载的内容 | 暂保留，待确认 |
 | holidayhaven.com.au、kiamacoast.com.au | — | 没找到条款页 | 暂保留，待确认 |
 | centralcoast.nsw.gov.au、booderee.gov.au、cockatooisland.gov.au、waternsw.com.au | — | 没找到网站使用条款（Cockatoo Island 的是住宿预订条款；WaterNSW 的 robots 读不到） | 暂保留，待确认 |
@@ -57,13 +58,20 @@
 
 「暂保留，待确认」的只是**没找到限制**，不等于没有；这些站在发布前要再核对一遍（或联系对方），一旦发现有限制，用同样的方法改成 official_only。新加的网站按上面的流程先查条款再收。
 
+**第 17–18 批（Ulladulla 以南、Goulburn、Mudgee、Orange 的非政府营地，2026-11-22）的取舍**：
+- **跳过 Discovery Parks 和 G’day Parks**：它们的条款禁止程序读取，这一带的这两家公园不读；只在这里记一笔，没收。G’day Parks 站上有页面、但公园自己官网读不了的（例 Goulburn South Caravan Park），同样没收。
+- **政府经营的不收**（这次只收非政府）：Mudgee Riverside Park、Mudgee Valley Park（官网写明 Mid-Western Regional Council 运营）、Colour City Caravan Park（Orange 市议会）、Holiday Haven 各园。以后做政府营地批次时再收。
+- **没收的其他**：Batemans Bay Marina Resort（BIG4 站上只有小屋、没有营位）；Crestview Tourist Park（在 Queanbeyan，不在这一带）；Goulburn South Caravan Park 官网（goulburnsouthcp.com.au）浏览器打不开；Bushlands Tourist Park（Windeyer，离 Mudgee 约 40 公里）官网在浏览器里读不出内容。
+- Lake Conjola（Ulladulla 以北一点点）的 Ingenia 营地在 BIG4 站同一页清单里，一并收了。
+- 第 17 批取自 big4.com.au 的各营地页（包含 NRMA、Tasman、Ingenia、Eureka、Hampshire 等品牌的挂牌）：来源 type，BIG4 品牌的写 operator，其他品牌写 other。
+
 ## 二、文件
 
 | 文件 | 作用 | 谁改 |
 |---|---|---|
 | RULES-CAMP.md | 本说明 | Opus |
 | camp_codes.csv | 露营地的设施词表 | Opus（Sonnet 不改） |
-| camp_batches.csv | 批次清单：16 批（第 7–10 批是非政府经营的营地；第 11–16 批是远处的 NPWS 营地，只收名称和地点），按 order 做 | Sonnet |
+| camp_batches.csv | 批次清单：18 批（第 7–10 批是非政府经营的营地；第 11–16 批是远处的 NPWS 营地，只收名称和地点；第 17–18 批是 Ulladulla 以南、Goulburn、Mudgee、Orange 一带的非政府营地），按 order 做 | Sonnet |
 | data/camps/au-nsw-<slug>-<序号>.jsonl | 露营地，每行一个 | Sonnet |
 | place_data_tool.py | 同一个工具：文件放在 data/camps/ 里就按露营地校验 | 不改 |
 
