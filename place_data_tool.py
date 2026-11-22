@@ -43,6 +43,10 @@ LANGS = ["en", "zh", "ko", "ja", "hi", "es", "vi", "ar", "other"]
 BOOKING = ["none", "required", "recommended"]
 # 露营地的经营方：government（政府自己管）/ private（私人或连锁公司经营，用户要求 2026-11-22 起也收，但必须标出来）
 OPERATOR_TYPES = ["government", "private"]
+# 来源网站的版权/使用条款要求先获得许可（收费、放进销售产品、复制、商用……）的营地（用户要求 2026-11-22 起）：
+# 只收名称和地点，不收设施等细节；facts 写 []，note_zh 用下面这句固定提示，App 里显示它并给「访问官网」按钮（official_url）。
+DETAIL_POLICIES = ["official_only"]
+NOTE_OFFICIAL_ONLY = "该来源有版权要求，本 App 只收录名称和地点，详细信息请访问官网。"
 WEEKDAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 DAY_WORDS = WEEKDAYS + ["daily", "weekdays", "weekends", "public_holiday"]
 # 不能当来源的网站（和公园的一样）
@@ -54,7 +58,7 @@ BOOKING_ONLY_PARTS = ["eventbrite.", "humanitix.", "trybooking.", "ticketek.", "
 GREATER_SYDNEY_BOX = (-34.45, -32.95, 149.95, 151.70)
 # 露营地（Opus 2026-11-22）：放在 data/camps/，词表是 camp_codes.csv，批次是 camp_batches.csv，规则见 RULES-CAMP.md。
 # 和泳池、图书馆分开放：打包、发布脚本不读 data/camps/，所以已经上架的 App 不受影响。
-CAMP_BOX = (-35.60, -32.30, 149.00, 152.30)      # 悉尼周边两三小时车程的大致范围，只用来提醒坐标写反
+CAMP_BOX = (-37.60, -28.00, 140.90, 153.70)      # 新州范围（2026-11-22 起也收远处的 NPWS 营地），只用来提醒坐标写反
 
 MAX_EV = 120
 MAX_NOTE = 80
@@ -69,7 +73,7 @@ SESSION_OPTIONAL = ["end", "age_min_months", "age_max_months", "language", "term
                     "cost", "valid_from", "valid_to", "note_zh"]
 CAMP_REQUIRED = ["id", "kind", "name", "area", "sources", "facts", "checked", "status"]
 CAMP_OPTIONAL = ["park", "suburb", "address", "lat", "lon", "operator", "operator_type", "booking", "booking_url",
-                 "season", "note_zh", "aka"]
+                 "season", "note_zh", "aka", "detail_policy", "official_url"]
 EVENT_REQUIRED = ["id", "title", "council", "dates", "sources", "checked"]
 EVENT_OPTIONAL = ["place", "venue", "suburb", "age_min", "age_max", "cost", "booking", "booking_url",
                   "holiday", "note_zh"]
@@ -203,7 +207,7 @@ def check_common(rep, where, rec, required, optional, today):
     if note is not None and (not isinstance(note, str) or len(note) > MAX_NOTE):
         rep.err(where, f"note_zh 最多 {MAX_NOTE} 个字符")
     for k, v in rec.items():
-        if k in ("sources", "booking_url"):
+        if k in ("sources", "booking_url", "official_url"):
             continue
         texts = [v] if isinstance(v, str) else []
         if k == "facts" and isinstance(v, list):
@@ -258,6 +262,23 @@ def validate_place(rec, codes, rep, today, line, camp=False):
             rep.err(where, "非政府经营（operator_type=private）要写 operator：官网上的经营方名字")
         if "booking_url" in rec:
             check_url(rep, where, rec["booking_url"], booking_ok=True)
+        if "detail_policy" in rec:
+            if rec["detail_policy"] not in DETAIL_POLICIES:
+                rep.err(where, f"detail_policy 只能是 {' / '.join(DETAIL_POLICIES)}")
+            else:
+                if "official_url" not in rec:
+                    rep.err(where, "detail_policy=official_only 要写 official_url：官网上这个营地的页面")
+                if rec.get("facts"):
+                    rep.err(where, "detail_policy=official_only 的营地只收名称和地点：facts 写 []")
+                for k in ("booking", "booking_url", "season"):
+                    if k in rec:
+                        rep.err(where, f"detail_policy=official_only 不写 {k}（细节请访问官网）")
+                if rec.get("note_zh") != NOTE_OFFICIAL_ONLY:
+                    rep.err(where, f"detail_policy=official_only 的 note_zh 要用固定提示语：{NOTE_OFFICIAL_ONLY}")
+        elif "official_url" in rec:
+            rep.err(where, "official_url 只和 detail_policy 一起用")
+        if "official_url" in rec:
+            check_url(rep, where, rec["official_url"])
     rid = rec.get("id")
     if isinstance(rid, str) and isinstance(council, str):
         prefix = f"au-nsw-{council}-{kind}-"
@@ -584,12 +605,16 @@ def cmd_stats(args, codes):
         codes = CAMP_CODES
     a_codes = {c: s for c, s in codes.items() if s["priority"] == "A"}
     places = 0
+    official_only = 0
     for path in args.files:
         records, _ = read_jsonl(path)
         rtype = record_type(path, args.type)
         for _, rec in records:
             if rtype not in ("place", "camp"):
                 kinds[rtype] += 1
+                continue
+            if rec.get("detail_policy") == "official_only":
+                official_only += 1          # 只收名称和地点，不算进事实统计
                 continue
             places += 1
             kinds[rec.get("kind", "?")] += 1
@@ -599,6 +624,8 @@ def cmd_stats(args, codes):
                 if rec.get("kind") in s["kinds"] and c in have:
                     covered[c] += 1
     print("条数：", dict(kinds))
+    if official_only:
+        print(f"另有只收名称和地点（detail_policy=official_only）的 {official_only} 个，下面的统计不含它们")
     if places:
         print(f"去处 {places} 个，事实 {facts} 条，平均每个 {facts / places:.1f} 条")
         for c, s in sorted(a_codes.items()):
@@ -691,6 +718,14 @@ def cmd_selftest(args, codes):
             ("露营地：非政府经营必须写 operator", bool(validate_records([(1, dict(good_camp, operator_type="private"))], "camp", codes, today).errors)
                                       and not validate_records([(1, dict(good_camp, operator_type="private", operator="Test Holiday Park"))], "camp", codes, today).errors),
             ("露营地：operator_type 只能是 government / private", bool(validate_records([(1, dict(good_camp, operator_type="council"))], "camp", codes, today).errors)),
+            ("露营地：版权受限的营地只收名称和地点",
+             not validate_records([(1, dict({k: v for k, v in good_camp.items() if k not in ("facts", "booking", "booking_url")},
+                                            facts=[], detail_policy="official_only", note_zh=NOTE_OFFICIAL_ONLY,
+                                            official_url="https://www.nationalparks.nsw.gov.au/test"))], "camp", codes, today).errors),
+            ("露营地：official_only 不能带设施事实", bool(validate_records([(1, dict(good_camp, detail_policy="official_only", note_zh=NOTE_OFFICIAL_ONLY,
+                                            official_url="https://www.nationalparks.nsw.gov.au/test"))], "camp", codes, today).errors)),
+            ("露营地：official_only 要写 official_url 和固定提示语", bool(validate_records([(1, dict({k: v for k, v in good_camp.items() if k not in ("facts", "booking", "booking_url")},
+                                            facts=[], detail_policy="official_only"))], "camp", codes, today).errors)),
         ]
         for name, passed in camp_checks:
             print(("  ✓ " if passed else "  ✗ ") + name)
