@@ -1,6 +1,6 @@
-# 露营地数据：格式与填写说明（v1 · 2026-11-22）
+# 露营地数据：格式与填写说明（v2 · 2026-11-22）
 
-> 「去哪玩」下一步要加的一类：悉尼周边开车两三小时内、**政府管的露营地**。这份说明写给 **Sonnet**（照着收集）和 **Opus**（做 App 时读）。
+> 「去哪玩」下一步要加的一类：悉尼周边开车两三小时内的露营地，**政府管的为主，私营和连锁的也收，但必须标明是非政府经营**（operator_type=private，并写 operator）。这份说明写给 **Sonnet**（照着收集）和 **Opus**（做 App 时读）。
 > 通用的规矩（只记事实、页面没写不写、坐标不估、不记联系人、哪些网站不能用）和泳池、图书馆一样，在 RULES.md 第四节和第十节，**先读那两节**。这里只写露营地不一样的地方。
 > **现在只收集、不发布**：露营地放在 `data/camps/`，打包和发布脚本（tools/）不读这个文件夹，所以已经上架的 App 1.0 不受影响。**收露营地时不要跑 tools/publish.py。** 等 App 1.1 能显示露营地了，再由 Opus 接上发布。
 
@@ -9,14 +9,22 @@
 | 收 | 不收 |
 |---|---|
 | NSW 国家公园（NPWS）网站上的 campground | 小屋、别墅、豪华帐篷（cabins、cottages、glamping、lodges） |
-| NSW 州森林（Forestry Corporation）网站上的 camping area | 私人和连锁的 holiday park、caravan park（Big4、NRMA、Discovery、Ingenia、Reflections 等） |
-| council、联邦或州政府机构**自己经营**的 camping area / tourist park（camp_batches.csv 第 6 批点了名的） | Hipcamp、Youcamp 这类私人营地 |
+| NSW 州森林（Forestry Corporation）网站上的 camping area | 页面写明没有营位、只有小屋的公园（例 The Palms at Avoca） |
+| council、联邦或州政府机构**自己经营**的 camping area / tourist park（第 6 批点了名的） | 以长住租户或站点持有人为主、几乎没有游客营位的公园（例 Leetsvale） |
+| **非政府经营**的 holiday park / caravan park / 营地（第 7–10 批：NRMA、BIG4 站上挂牌的公园、G’day Group（Discovery Parks 和 G’day Parks）、Hampshire Holidays、Belgravia、独立公园）。**必须**写 operator_type=private 和 operator | Hipcamp、Youcamp 这类私人土地营地（只有平台页，没有自己的官网） |
 | | 只能住房车、不让搭帐篷的 rest area |
 
-**能用的来源**：管这个营地的机构自己的官网页面（nationalparks.nsw.gov.au、forestrycorporation.com.au、council 官网、harbourtrust.gov.au、waternsw.com.au 等）。
+**政府还是私营，按官网写的经营方判断**：议会拥有、但交给私人公司管的（例 NRMA 管的 Shellharbour Beachside、Belgravia 管的 Katoomba Falls）算私营，operator 写官网上的经营方名字。官网没写经营方的，operator 写公园自己的名字。同一个公园在两家运营商网站上都有，先收一条，status 写 needs_check，operator 把两家都写上。
+
+**能用的来源**：管这个营地的机构自己的官网页面（nationalparks.nsw.gov.au、forestrycorporation.com.au、council 官网、harbourtrust.gov.au、waternsw.com.au 等）。**非政府营地**用运营商或这个公园自己的官网，来源 type 写 operator；BIG4 网站上挂牌、但不是 BIG4 品牌的公园（Ingenia、Eureka 和独立公园）写 other。**只用页面上的事实，客人评论一律不用**。
 **不能用的来源**：WikiCamps、CamperMate、Anycamp、Hipcamp、Tripadvisor、Google 地图、Facebook、博客、旅游网站（visitnsw.com、sydney.com 也不用，它们是转述）。
 
-**网站让不让抓**：nationalparks.nsw.gov.au 的 robots.txt 在 2026-11-22 看过，营地页面没有被禁止。别的网站第一次用时，WebFetch 打不开、被拒或返回 403，就**不绕过**：这一批在 camp_batches.csv 里标 blocked，notes 写原因，向我汇报。
+**网站让不让抓**：
+- nationalparks.nsw.gov.au 的 robots.txt（2026-11-22 看过）允许 /camping-and-accommodation/ 和 /sitemap.xml。**NPWS 的搜索页只显示前 10 条，但 sitemap 里列了全部 375 个 campground 页面**，所以按 sitemap 核对就能收全，不用翻页。
+- 别的网站**第一次用时先看 robots.txt**（浏览器打开 `<站>/robots.txt`）。写了 Disallow: / 或点名禁止 ClaudeBot、anthropic-ai、Claude-Web（Cloudflare 的 Content-Signal 也算）的，这个站不让 Anthropic 的程序读：**不读它的页面**，这一块标 blocked 并向我汇报（2026-11-22 查到的：Patonga 的订位站 cchp.com.au）。robots.txt 打不开、或被带到登录页（WaterNSW）的，同样不读，除非 WebFetch 能直接读到那一页。
+- 2026-11-22 看过、允许读取的：NPWS、Forestry Corporation、Holiday Haven、Kiama Coast、Wollongong、Booderee、Cockatoo Island、Hawkesbury、Central Coast 议会、Blue Mountains 议会、Lake Mac Holiday Parks、NRMA、BIG4、Discovery Parks、G’day Parks、Reflections、Hampshire Holidays、Katoomba Falls 和 Blackheath Glen（Belgravia）、Del Rio、Blue Lagoon、Walu。
+- WebFetch 打不开、被拒或返回 403 的，就**不绕过**：这一批在 camp_batches.csv 里标 blocked，notes 写原因，向我汇报。
+- 只查了 robots.txt，**没有逐家核对网站的使用条款**；私营连锁的条款要用的时候再确认。Forestry Corporation 的版权页写了：收费或放进销售产品要先通知并取得许可，App 的 Pro 是收费的，**发布前要先向 Forestry Corporation 申请**。我们只用自己的话记事实并附来源链接。
 
 ## 二、文件
 
@@ -24,7 +32,7 @@
 |---|---|---|
 | RULES-CAMP.md | 本说明 | Opus |
 | camp_codes.csv | 露营地的设施词表 | Opus（Sonnet 不改） |
-| camp_batches.csv | 批次清单：6 批，按 order 做 | Sonnet |
+| camp_batches.csv | 批次清单：10 批（第 7–10 批是非政府经营的营地），按 order 做 | Sonnet |
 | data/camps/au-nsw-<slug>-<序号>.jsonl | 露营地，每行一个 | Sonnet |
 | place_data_tool.py | 同一个工具：文件放在 data/camps/ 里就按露营地校验 | 不改 |
 
@@ -75,17 +83,18 @@
 | park |  | 所在的国家公园、州森林或保护区的名字，照官网写（例 Cattai National Park） |
 | suburb |  | 页面写了最近的地名或所在 suburb 才填 |
 | address |  | 页面写了街道地址才填 |
-| lat / lon |  | **页面上写了才填，不要估**，不知道写 null。页面自己的 Get directions 或地图链接里带的经纬度算页面写了的 |
-| operator |  | 不是管理机构自己经营时，官网写的经营方名字 |
+| lat / lon |  | **页面上写了才填，不要估**，不知道写 null。页面自己的 Get directions 或地图链接里带的经纬度、页面里嵌的 latitude/longitude 数据（BIG4、Discovery、G’day 的页面有）、JSON-LD 的 geo 算页面写了的。**只给了 Google 地图链接的不用**，写 null |
+| operator |  | 不是管理机构自己经营时，官网写的经营方名字。**operator_type 是 private 时必填** |
+| operator_type |  | government（政府自己经营，默认）/ private（非政府经营：私营、连锁、council 外包给私人公司的）。**非政府的一定要写 private** |
 | booking |  | required（要预订）/ recommended（建议预订）/ none（不用订，先到先得）；页面没说就不写 |
 | booking_url |  | 官网上的预订页面链接 |
 | season |  | 只在某几个月开：{"from": "09-01", "to": "04-30"}，可以加 ev |
-| sources | ✓ | 第一个放这个营地自己的页面。type：NPWS、州森林、WaterNSW 写 state_gov；council 写 council；Harbour Trust 写 federal_gov |
+| sources | ✓ | 第一个放这个营地自己的页面。type：NPWS、州森林、WaterNSW 写 state_gov；council 写 council；Harbour Trust 写 federal_gov；运营商或公园自己的官网写 operator；BIG4 网站上的非 BIG4 品牌公园写 other |
 | facts | ✓ | 见第四节；什么都没查到写 [] |
 | checked | ✓ | 查的当天，YYYY-MM-DD |
 | status | ✓ | ok / needs_check（页面自相矛盾）/ temporarily_closed（页面写了现在关闭）/ seasonal_closed / under_construction |
 | note_zh |  | 一句中文备注，自己的话，最多 80 个字符：大门几点锁、要走多远、现在为什么关 |
-| aka |  | 别名列表 |
+| aka |  | 别名列表（例 原来的名字：Camden Holiday Park 的 aka 写 ["Poplar Tourist Park"]） |
 
 露营地**不写 hours**（工具会拦）。大门开关时间写在 note_zh。
 
@@ -137,13 +146,13 @@
 
 **收集**
 
-5. **先列清单**：用网页搜索找到这一批的列表页（NPWS：Camping and accommodation 里按地区筛的 campground 列表；第 3、4、5 批按批次名字里点名的公园或森林，一个个找它的 camping 页面），这样问 WebFetch：
+5. **先列清单**：用网页搜索找到这一批的列表页（NPWS：Camping and accommodation 里按地区筛的 campground 列表；第 3、4、5 批按批次名字里点名的公园或森林，一个个找它的 camping 页面；第 7–10 批按运营商的公园列表或 sitemap，只收悉尼周边约 160km 内的），这样问 WebFetch：
 
 > List every campground or camping area linked on this page with its name, the park or forest it is in, and its full URL. Only include places where you can camp in a tent, camper trailer, caravan or campervan. Do not include cabins, cottages, lodges or glamping.
 
-   列表有翻页或「Load more」拿不全时，改用网页搜索「<公园名> campground NSW National Parks」一个公园一个公园补，只开官网的结果。清单写进 notes，方便下次接着做。
+   列表有翻页或「Load more」拿不全时：NPWS 用 https://www.nationalparks.nsw.gov.au/sitemap.xml 核对全部 campground 页面（robots 允许）；别的站用它自己的 sitemap.xml；都没有再改用网页搜索「<公园名> campground NSW National Parks」一个公园一个公园补，只开官网的结果。清单写进 notes，方便下次接着做。
 
-6. **再一个个开营地页面**，这样问 WebFetch：
+6. **再一个个开营地页面**。WebFetch 打不开或字段读不全时，用 Claude 内置浏览器：先 request_access，打开 `<站>/robots.txt` 确认允许，再在页面里用 JavaScript fetch 同站页面并解析（每次请求间隔 0.4–0.6 秒，不要并发；单次脚本别超过约 45 秒；只打印需要的一小段）。BIG4、Discovery、G’day 的页面里有 JSON-LD（名字、地址、petsAllowed、设施清单）和 latitude/longitude；Discovery 和 G’day 的正文用 `document.body.textContent`（`main` 里是空占位）；页面里的客人评论不用。WebFetch 可以这样问：
 
 > List exactly as written on this page, for this campground: the park it is in and the region; the camping types it is suitable for (tent, camper trailer, caravan, campervan, camping beside vehicle, walk-in or remote camping, group); how you get there (2WD, 4WD, walk-in, boat) and the distance to walk from the carpark; the number of campsites; every facility (toilets and whether flush or non-flush, showers and whether hot, drinking water, barbecues and their type, picnic tables, camp kitchen, powered sites, rubbish bins, firewood, kiosk, playground); whether campfires, generators and pets are allowed; whether you can swim there; the Accessibility section; camping fees per night and how they are charged; park entry fees; whether booking is required and the booking link; any closure, seasonal closure or alert; the street address or nearest locality; and any latitude and longitude (including numbers inside a 'Get directions' or map link). Do not summarise or leave items out. Do not include phone numbers, email addresses or staff names.
 
@@ -172,9 +181,9 @@ EOF
 在「app」项目里新开对话，模型选 Sonnet：
 
 ```
-请帮我收集悉尼周边政府管的露营地数据（国家公园、州森林、council 自营的营地）。数据和规则都在 GitHub 仓库 sasuke9527/parkapp-data：先用 add_repo 接上它（access 选 push）、clone 下来，读仓库里的 RULES-CAMP.md 和 RULES.md 的第四节、第十节，然后严格按 RULES-CAMP.md 第五节的流程做：准备、选批次、收集、收尾（提交、推送）。
+请帮我收集悉尼周边的露营地数据（政府管的：国家公园、州森林、council 自营的营地；也收非政府经营的私营和连锁营地，但要标明是非政府经营）。数据和规则都在 GitHub 仓库 sasuke9527/parkapp-data：先用 add_repo 接上它（access 选 push）、clone 下来，读仓库里的 RULES-CAMP.md 和 RULES.md 的第四节、第十节，然后严格按 RULES-CAMP.md 第五节的流程做：准备、选批次、收集、收尾（提交、推送）。
 
-铁律：只记事实和来源链接；页面没写的不写；不抄原文、不存照片；只用管理机构自己的官网，不用 WikiCamps、Hipcamp、Google 地图、Facebook、旅游网站这类来源；坐标页面上没有就写 null，不要估；不记电话、邮箱和工作人员的名字；网站不让访问就不绕过。不要跑 tools/publish.py。
+铁律：只记事实和来源链接；页面没写的不写；不抄原文、不存照片；只用管理机构或运营商自己的官网，不用 WikiCamps、Hipcamp、Google 地图、Google 评论、Facebook、旅游网站、客人评论这类来源；坐标页面上没有就写 null，不要估；不记电话、邮箱和工作人员的名字；网站不让访问就不绕过（robots.txt 禁止 Claude 的程序读的，不读，标 blocked 并汇报）。非政府经营的营地要写 operator_type=private 和 operator。不要跑 tools/publish.py。
 
 这次做满 30 个营地或者这一批做完就停，更新 camp_batches.csv，提交并推送到 GitHub，然后用中文向我汇报。
 ```
@@ -188,4 +197,4 @@ EOF
 
 ---
 
-*最后更新：2026-11-22*
+*最后更新：2026-11-22（v2：加入非政府经营的营地、robots 结论、浏览器收集方法）*
