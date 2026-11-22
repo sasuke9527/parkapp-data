@@ -2,7 +2,7 @@
 
 > 「去哪玩」下一步要加的一类：悉尼周边开车两三小时内的露营地，**政府管的为主，私营和连锁的也收，但必须标明是非政府经营**（operator_type=private，并写 operator）。这份说明写给 **Sonnet**（照着收集）和 **Opus**（做 App 时读）。
 > 通用的规矩（只记事实、页面没写不写、坐标不估、不记联系人、哪些网站不能用）和泳池、图书馆一样，在 RULES.md 第四节和第十节，**先读那两节**。这里只写露营地不一样的地方。
-> **现在只收集、不发布**：露营地放在 `data/camps/`，打包和发布脚本（tools/）不读这个文件夹，所以已经上架的 App 1.0 不受影响。**收露营地时不要跑 tools/publish.py。** 等 App 1.1 能显示露营地了，再由 Opus 接上发布。
+> **发布（2026-11-22 起）**：露营地放在 `data/camps/`，用 **`python3 tools/publish_camps.py`** 单独打包成 `docs/camps.json`，并在 `docs/manifest.json` 里更新 `camps` 一栏；App 1.1 起会读它。它不碰 `docs/places.json`，已经上架的 App 1.0 不认识 `camps` 这一栏、不受影响。**收露营地时仍然不要跑 tools/publish.py**（那是去处、活动的发布）；收完一批、校验通过后跑 `tools/publish_camps.py`，再提交、推送。
 
 ## 一、收什么、不收什么
 
@@ -255,8 +255,8 @@ EOF
 
 ## 七、收完以后（Opus 的活）
 
-1. App 1.1：「去哪玩」加「露营」一栏（列表、详情、按怎么住和设施筛选）；详情和泳池、图书馆一样是 Pro。
-2. 发布：露营地单独打包成 docs/camps.json，在 manifest.json 里另加一栏。**不要把 kind=camp 放进 places.json**：1.0 版 App 不认识这个 kind，会整份读不出来。
+1. App 1.1（2026-11-22 做好了，等在 Xcode 里编译、真机上看）：「去哪玩」加「露营」一类（列表、详情、按怎么住和设施筛选）；详情和筛选和泳池、图书馆一样是 Pro；只有名称和地点的不打码。
+2. 发布（2026-11-22 做好了）：`tools/publish_camps.py` 把露营地单独打包成 docs/camps.json（每条事实只留 code 和 value，不带 ev 原文摘录），manifest.json 里加 `camps` 一栏（format、version、file、count）；`tools/publish.py` 重写 manifest 时会把这一栏原样留着。**不要把 kind=camp 放进 places.json**：1.0 版 App 不认识这个 kind，会整份读不出来。App 这边的代码在 `Places/CampsLogic.swift`、`Places/CampViews.swift`。
 3. 没有坐标的营地：用公园数据里同一个国家公园的位置（来自 OpenStreetMap）定个大概，界面上写「大约」。
 4. 营地费、开闭状态一年核一次，并进季度复查（建议每年春季那一轮）。
 5. App 显示：detail_policy=official_only 的营地只显示名称、公园、地点、地图位置，加固定提示语（note_zh）和「访问官网」按钮（official_url）；这类营地不参加按设施的筛选。

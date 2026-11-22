@@ -8,5 +8,14 @@
   "places": 180,
   "sessions": 264,
   "events": 44,
-  "terms": 5
+  "terms": 5,
+  "camps": {
+    "format": 1,
+    "version": "202611220640",
+    "generated": "2026-11-22",
+    "file": "camps.json",
+    "bytes": 369479,
+    "sha256": "bf6127854ecd038b9a03de6306a1d43f409cb6733b7dfc5a6b09e99ba52bb51c",
+    "count": 485
+  }
 }

@@ -139,6 +139,13 @@ def main(argv=None):
         "events": len(new["events"]),
         "terms": len(new["terms"]),
     }
+    # 露营地是另一个文件（docs/camps.json，tools/publish_camps.py 发布）：它在 manifest 里的那一栏原样留着
+    try:
+        old_manifest = json.loads((DOCS / "manifest.json").read_text(encoding="utf-8"))
+        if isinstance(old_manifest.get("camps"), dict):
+            manifest["camps"] = old_manifest["camps"]
+    except (OSError, json.JSONDecodeError):
+        pass
     (DOCS / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     (DOCS / ".nojekyll").touch()
     print(f"发布好了 docs/{DATA_FILE}（版本 {new['version']}）：{summary}")
