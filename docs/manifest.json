@@ -1,13 +1,13 @@
 {
   "format": 1,
-  "version": "202611211009",
-  "generated": "2026-11-21",
+  "version": "202611271000",
+  "generated": "2026-11-27",
   "file": "places.json",
-  "bytes": 268123,
-  "sha256": "aee740c4a4d4599be6a73e8445276e6c186ef577d85c4bad7496b90a542d4be4",
+  "bytes": 274639,
+  "sha256": "84eb481f7447a8daea6ab67b3464144d4a1e03d16b46594f972fb6e33fa80e59",
   "places": 180,
   "sessions": 264,
-  "events": 44,
+  "events": 54,
   "terms": 5,
   "camps": {
     "format": 1,

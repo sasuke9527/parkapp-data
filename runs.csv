@@ -2,3 +2,4 @@ date,round,work,pages,changed,published,notes
 2026-11-20,2026-summer,活动 hornsby（官网还没公布暑假活动）,3,0,none,离假期 28 天，events_round 先不写，下次再看
 2026-11-20,2026-summer,活动 hornsby（官网还没公布暑假活动）,2,0,none,手动试跑；离假期 28 天，events_round 先不写，下次再看
 2026-11-21,2026-summer,活动 hornsby ku-ring-gai the-hills ryde,17,44,202611211009,hornsby 仍没有暑假活动；ku-ring-gai 收 34 条（events_round 已写）；the-hills 活动日历页 robots.txt 读不到（两次，没绕过）；ryde 收 10 条，第 2 页和 Active Kids 暑假场次还没有，events_round 先不写；17 个页面里 4 个没打开成功（robots 2、权限 2）；Ku-ring-gai 的列表页后半是 WebFetch 摘要，没逐场核时间和费用
+2026-11-27,2026-summer,活动 hornsby the-hills ryde parramatta,14,20,202611271000,hornsby 仍没有暑假活动（图书馆活动只列到 12-16）；the-hills 活动日历页第三次 ROBOTS_UNREACHABLE，没绕过；ryde 第 1 页 10 场没变，3D Pen 补了第二个日期；parramatta 图书馆暑假活动收 10 条（官网共 19 场，第 2 页没有链接读不到；Active Parramatta 暑假页还是春假）；改了 20 条 = parramatta 新增 10 + ryde 更新 10（9 条只改 checked，1 条补日期）；14 个页面里 1 个没打开成功（robots）；列表后半是 WebFetch 摘要，详情页只核了 3 场；4 个 council 的 events_round 都没写（离假期 21 天）
